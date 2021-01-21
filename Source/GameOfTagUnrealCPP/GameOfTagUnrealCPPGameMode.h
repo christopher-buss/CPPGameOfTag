@@ -14,11 +14,6 @@ UCLASS()
 class AGameOfTagUnrealCPPGameMode final : public AGameModeBase {
     GENERATED_BODY()
 
-    UPROPERTY()
-    AActor* It;
-    UPROPERTY()
-    AActor* PreviousIt;
-
     void SetFirstTaggedPlayer();
     void Main();
 
@@ -29,4 +24,9 @@ public:
     void Tag(AActor* Tagger, AActor* Tagged);
     UPROPERTY(BlueprintAssignable)
     FOnItChanged CallOnItChanged;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    AActor* It;
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+    AActor* PreviousIt;
 };

@@ -3,9 +3,8 @@
 #include "GameOfTagUnrealCPPGameMode.h"
 
 #include "ATagCharacter.h"
+#include "ATagPlayer.h"
 #include "Kismet/GameplayStatics.h"
-#include "UObject/ConstructorHelpers.h"
-
 
 /**
  * @brief Gets all the AI actors and sets the first found actor as "It"
@@ -18,14 +17,10 @@ void AGameOfTagUnrealCPPGameMode::SetFirstTaggedPlayer() {
 }
 
 /**
- * @brief Sets default pawn class to our Blueprinted character
+ * @brief Sets default pawn class to our character
  */
 AGameOfTagUnrealCPPGameMode::AGameOfTagUnrealCPPGameMode() {
-    static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(
-        TEXT("/Game/ThirdPersonCPP/Blueprints/BP_TagPlayer"));
-    if (PlayerPawnBPClass.Class != nullptr) {
-        DefaultPawnClass = PlayerPawnBPClass.Class;
-    }
+    DefaultPawnClass = AATagPlayer::StaticClass();
 }
 
 /**

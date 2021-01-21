@@ -1,12 +1,12 @@
 // Copyright Christopher Buss 2020. Royal Holloway, University of London.
 
-
 #include "ATagCharacter.h"
 
-
-#include "AAIController.h"
 #include "Components/BoxComponent.h"
 #include "GameOfTagUnrealCPPGameMode.h"
+#include "TagAIController.h"
+#include "Engine/SkeletalMesh.h"
+#include "Animation/AnimBlueprint.h"
 
 AATagCharacter::AATagCharacter() {
     // Gets the default material from game files and creates an instance
@@ -21,15 +21,39 @@ AATagCharacter::AATagCharacter() {
         TheMaterial = static_cast<UMaterial*>(Material.Object);
     }
 
-    // Create a box mesh
+    // Create a box mesh for tag collisions
     Box = CreateDefaultSubobject<UBoxComponent>(TEXT("Box"));
-    /* Set location of mesh */
     Box->SetRelativeLocation(FVector(45.0f, 0.f, 0.f));
     Box->SetRelativeScale3D(FVector(0.25f, 1.0f, 2.75f));
     Box->SetupAttachment(RootComponent);
-    /* Attach box collision to function */
     Box->OnComponentBeginOverlap.AddDynamic(
         this, &AATagCharacter::OnBoxBeginOverlap);
+
+    // Set Skeletal Mesh
+    static ConstructorHelpers::FObjectFinder<USkeletalMesh> MeshContainer(
+        TEXT("SkeletalMesh'/Game/Mannequin/Character/"
+            "Mesh/SK_Mannequin.SK_Mannequin'"));
+    USkeletalMesh* PlayerMesh = static_cast<USkeletalMesh*>(
+        MeshContainer.Object);
+    GetMesh()->SetSkeletalMesh(PlayerMesh);
+
+    // Set Actor Location and Rotation
+    const FVector Location = FVector(0, 0, -90);
+    const FRotator Rotation = FRotator(0, -90, 0);
+    GetMesh()->SetRelativeLocationAndRotation(Location, Rotation);
+
+    // Set character animations
+    static ConstructorHelpers::FObjectFinder<UAnimBlueprint>
+        AnimationContainer(
+            TEXT("AnimBlueprint'/Game/Mannequin/Animations/"
+                "ThirdPerson_AnimBP_C.ThirdPerson_AnimBP_C'"));
+    UAnimBlueprint* CharacterAnimation = static_cast<UAnimBlueprint*>(
+        AnimationContainer.Object);
+    GetMesh()->SetAnimClass(
+        CharacterAnimation->GetAnimBlueprintGeneratedClass());
+
+    // Set AI Controller;
+    AIControllerClass = ATagAIController::StaticClass();
 }
 
 /**
@@ -85,7 +109,6 @@ void AATagCharacter::OnBoxBeginOverlap(
 
 void AATagCharacter::BeginPlay() {
     Super::BeginPlay();
-    UE_LOG(LogTemp, Warning, TEXT("Begin Play"));
     SetCharacterMaterial();
     GameMode = static_cast<AGameOfTagUnrealCPPGameMode*>(GetWorld()->
         GetAuthGameMode());

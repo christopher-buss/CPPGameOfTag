@@ -2,8 +2,8 @@
 
 This project is a C++ recreation of the Blueprint game from the video "Building a game of Tag using Behavior Trees in Unreal Engine 4" by *Paul Gestwicki*. The original video can be found [here](https://youtu.be/vXtfOM4Vy8w).
 
-This project forms a section of my University Dissertation on comparisons between Blueprints and C++, and is part of an overarching chapter on game engines as a whole, as well as why the best practices are to implement games in Unreal using both Blueprints and C++ (as many simple tasks in Blueprints are tedious and time-consuming in C++). 
-The AI components of the game are currently missing, but are intended to be added at a later date as the documentation for pure C++ AI implementations are lacking (as Blackboards and Behaviour Trees are the intended way to create AI even if the implementations themselves can be in C++).
+This game forms a section in my University Dissertation on comparisons between Blueprints and C++, and is part of an overarching chapter on game engines as a whole. The Unreal section concludes as to why the best approach to Unreal game development is to implement games in Unreal using both Blueprints and C++.
+Most elements of the game are implemented in C++, aside from the use of the Blackboard, Behaviour Tree (which uses C++ Tasks and Services), and parts such as the animation system.
 
 Git commits are not present as they are from the original repository.
 
@@ -15,7 +15,7 @@ Git commits are not present as they are from the original repository.
 <Center> Opponent character tags the user. The opponent is now previous it and cannot be tagged.</center>
 
 ![Tagged Player Tagged User](https://i.imgur.com/Jpn4Gg8.png)
-<Center>The user tags an opponent, the user is now the previous tag.</center>
+<Center>The user tags an opponent, the user is now the previous it.</center>
 
 ![User Tagged Another Played, User Now Previous Tagger](https://i.imgur.com/SRnNk7i.png)
 
